@@ -351,7 +351,7 @@ function! db#connect(url) abort
   endif
   let pattern = db#adapter#call(url, 'auth_pattern', [], 'auth\|login')
   try
-    let auth_input = db#adapter#call(url, 'auth_input', [], "\n")
+    let auth_input = db#adapter#call(url, 'auth_input', [url], "\n")
     " Short-circuit the authentication if unnecessary for the adapter
     if auth_input == v:false
       return url

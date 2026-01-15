@@ -35,6 +35,15 @@ function! db#adapter#mysql#auth_pattern() abort
   return '^ERROR 104[45] '
 endfunction
 
+function! db#adapter#mysql#auth_input(url) abort
+  let params = db#url#parse(a:url).params
+  " Skip password prompt if credentials come from a config file
+  if has_key(params, 'defaults-group-suffix') || has_key(params, 'defaults-file') || has_key(params, 'defaults-extra-file')
+    return v:false
+  endif
+  return "\n"
+endfunction
+
 function! db#adapter#mysql#complete_opaque(url) abort
   return db#adapter#mysql#complete_database('mysql:///')
 endfunction
